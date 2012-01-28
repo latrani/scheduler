@@ -13,24 +13,28 @@
     
     <script id="event-template" type="text/x-handlebars-template">
       <div class="event">
-        <h1>{{name}}</h1>
+        <h3>{{name}}</h3>
       </div>
     </script>
 
     <script id="room-template" type="text/x-handlebars-template">
       <div class="room">
-        <h1>{{name}}</h1>
+        <h2>{{name}}</h2>
+        <div class="events">
+        </div>
+        <button class="add-event">Add Event</button>
       </div>
     </script>
 
-    <script id="track-template" type="text/x-handlebars-template">
-      <div class="track">
-        <h1>{{name}}</h1>
-      </div>
-    </script>
-
+    <script src="javascripts/app.js"></script>
 </head>
 <body>
-
+  <div id="scheduler">
+    <div id="room-panel">
+      <h1>Rooms</h1>
+      <div id="rooms"></div>
+      <button class="add-room">Add Room</button>
+    </div>
+  </div>
 </body>
 </html>
