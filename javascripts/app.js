@@ -39,19 +39,20 @@ var Room = (function(){
     var SimpleTemplate = Handlebars.compile($("#room-template").html());
 
     var SimpleView = Backbone.View.extend({
-        initialize: function() {
-            _.bindAll(this, "addEvent");
-            this.model.events.bind('add', this.addEvent);
+        events: {
+            "click button.add-event": "willAddEvent"
+        },
 
-            // This part seems a bit inelegant...
-            var that = this;
-            $(this.el).on("click", "button.add-event", function(){
-                var name = prompt("Name?");
-                that.model.events.add(new Event.model({name: name}));
-            });
+        initialize: function() {
+            _.bindAll(this, "addEvent", "willAddEvent");
+            this.model.events.bind('add', this.addEvent);
         },
         render: function() { 
             return $(this.el).html(SimpleTemplate(this.model.attributes));
+        },
+        willAddEvent: function() {
+            var name = prompt("Name?");
+            this.model.events.add(new Event.model({name: name}));
         },
         addEvent: function(event) {
             $(this.el).find(".events").append(new Event.view({model: event}).render());
@@ -72,21 +73,26 @@ var Scheduler = (function(){
         }
     });
 
-    var View = Backbone.View.extend({  
-        initialize: function() {
-            this.el = $("#scheduler");
-            this.model.rooms.bind('add', this.addRoom);
+    var Template = Handlebars.compile($("#scheduler-template").html());
 
-            // This part seems a bit inelegant...
-            var that = this;
-            $(this.el).find(".add-room").click(function(){
-                var name = prompt("Name?");
-                that.model.rooms.add(new Room.model({name: name}));
-            });
+    var View = Backbone.View.extend({ 
+        events: {
+            "click button.add-room": "willAddRoom"
         },
-
+ 
+        initialize: function() {
+            _.bindAll(this, "addRoom", "willAddRoom");
+            this.model.rooms.bind('add', this.addRoom);
+        },
+        render: function() { 
+            return $(this.el).html(Template());
+        },
+        willAddRoom: function() {
+            var name = prompt("Name?");
+            this.model.rooms.add(new Room.model({name: name}));
+        },
         addRoom: function(room) {
-          $("#rooms").append(new Room.view({model: room}).render());
+          $(this.el).find(".rooms").append(new Room.view({model: room}).render());
         }
     }); 
 
@@ -104,6 +110,7 @@ var Scheduler = (function(){
 
 $(function(){
     var scheduler = Scheduler.initialize();
+    $("body").append(scheduler.view.render());
 
     var ballroom = new Room.model({name: "Ballroom"});
     var dance = new Event.model({name: "Glow Dance"});
