@@ -10,7 +10,7 @@ body {
     margin: 10px;
 }
 
-$room-width: 110px;
+$room-width: 130px;
 $room-margin: 5px;
 
 $event-padding: 5px;
@@ -29,4 +29,22 @@ $event-width: $room-width - $event-padding * 2;
     width: $event-width;
     padding: $event-padding;
     margin: 5px 0;
+}
+
+.staging-panel {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    background-color: #CCC;
+    padding: 10px;
+    margin: 10px $room-margin;
+    width: $room-width;
+}
+
+input[type=date] {
+    width: 40px;
+}
+
+input[type=time] {
+    width: 40px;
 }

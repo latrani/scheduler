@@ -4,6 +4,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Scheduler</title>
 
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" type="text/css" />
+    <link href="javascripts/lib/jquery.ui.timepicker.css" media="print" rel="stylesheet" type="text/css" />
+
     <link href="stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
     <link href="stylesheets/print.css" media="print" rel="stylesheet" type="text/css" />
     <!--[if IE]>
@@ -11,6 +14,7 @@
     <![endif]-->
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 
     <script src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.2.2/underscore-min.js"></script>
@@ -20,15 +24,26 @@
     <script id="event-template" type="text/x-handlebars-template">
       <div class="event">
         <h3>{{name}}</h3>
+        <ul>
+          <li class="start-fields">
+            Start:<br/>
+            <input class="start-date" type="date"/>
+            <input class="start-time" type="time"/>
+          </li>
+          <li class="end-fields">
+            End:<br/>
+            <input class="end-date" type="date"/>
+            <input class="end-time" type="time"/>
+          </li>
+        </ul>
       </div>
     </script>
 
     <script id="room-template" type="text/x-handlebars-template">
       <div class="room">
         <h2>{{name}}</h2>
-        <div class="events">
-        </div>
         <button class="add-event">Add Event</button>
+        <div class="events"></div>
       </div>
     </script>
 
@@ -39,8 +54,16 @@
           <button class="add-room">Add Room</button>
           <div class="rooms"></div>
         </div>
+        <div class="staging-panel">
+          <h1>Staged Events</h1>
+          <button class="add-staged-event">Add Event</button>
+          <div class="staging"></div>
+        </div>
       </div>
     </script>
+
+    <script src="javascripts/lib/moment.min.js"></script>
+    <script src="javascripts/lib/jquery.ui.timepicker.js"></script>
 
     <script src="javascripts/modules/event.js"></script>
     <script src="javascripts/modules/room.js"></script>

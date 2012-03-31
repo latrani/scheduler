@@ -26,8 +26,10 @@ var Room = (function(){
             return $(this.el).html(SimpleTemplate(this.model.attributes));
         },
         willAddEvent: function() {
-            var name = prompt("Name?");
-            this.model.events.add(new Event.model({name: name}));
+            var name = prompt("Event name?");
+            if (name) {
+                this.model.events.add(new Event.model({name: name}));
+            }
         },
         addEvent: function(event) {
             $(this.el).find(".events").append(new Event.view({model: event}).render());
