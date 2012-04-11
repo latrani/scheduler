@@ -11,35 +11,36 @@ var Scheduler = (function(){
     var Template = Handlebars.compile($("#scheduler-template").html());
 
     var View = Backbone.View.extend({ 
+        className: 'scheduler',
         events: {
-            "click button.add-room": "willAddRoom",
-            "click button.add-staged-event": "willAddEvent"
+            "click button.add-room": "addRoom",
+            "click button.add-staged-event": "addEvent"
         },
  
         initialize: function() {
-            _.bindAll(this, "addRoom", "willAddRoom", "addEvent", "willAddEvent");
-            this.model.rooms.bind('add', this.addRoom);
-            this.model.events.bind('add', this.addEvent);
+            _.bindAll(this, "addRoom", "roomAdded", "addEvent", "eventAdded");
+            this.model.rooms.bind('add', this.roomAdded);
+            this.model.events.bind('add', this.eventAdded);
         },
         render: function() { 
             return $(this.el).html(Template());
         },
-        willAddRoom: function() {
+        addRoom: function() {
             var name = prompt("Room name?");
             if (name) {
                 this.model.rooms.add(new Room.model({name: name}));
             }
         },
-        addRoom: function(room) {
+        roomAdded: function(room) {
           $(this.el).find(".rooms").append(new Room.view({model: room}).render());
         },
-        willAddEvent: function() {
+        addEvent: function() {
             var name = prompt("Event name?");
             if (name) {
                 this.model.events.add(new Event.model({name: name}));
             }
         },
-        addEvent: function(event) {
+        eventAdded: function(event) {
             console.log($(this.el));
             $(this.el).find(".staging").append(new Event.view({model: event}).render());
         }

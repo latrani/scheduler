@@ -2,6 +2,9 @@
 
 var Room = (function(){
     var Model = Backbone.Model.extend({
+        // Attributes:
+        //   name: string
+
         initialize: function() {
             this.events = new Event.collection();
         }
@@ -14,24 +17,25 @@ var Room = (function(){
     var SimpleTemplate = Handlebars.compile($("#room-template").html());
 
     var SimpleView = Backbone.View.extend({
+        className: 'room',
         events: {
-            "click button.add-event": "willAddEvent"
+            "click button.add-event": "addEvent"
         },
 
         initialize: function() {
-            _.bindAll(this, "addEvent", "willAddEvent");
-            this.model.events.bind('add', this.addEvent);
+            _.bindAll(this, "addEvent", "eventAdded");
+            this.model.events.bind('add', this.eventAdded);
         },
         render: function() { 
             return $(this.el).html(SimpleTemplate(this.model.attributes));
         },
-        willAddEvent: function() {
+        addEvent: function() {
             var name = prompt("Event name?");
             if (name) {
                 this.model.events.add(new Event.model({name: name}));
             }
         },
-        addEvent: function(event) {
+        eventAdded: function(event) {
             $(this.el).find(".events").append(new Event.view({model: event}).render());
         }
     }); 
