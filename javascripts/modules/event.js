@@ -9,7 +9,7 @@ var Event = (function(){
         //   duration: milliseconds
 
         initialize: function() {
-            _.bindAll(this, "updateDuration", "setDuration");
+            _.bindAll(this, "updateDuration");
             this.on("change:start change:end", this.updateDuration);
             this.on("change:duration", this.setDuration);
         },
@@ -18,10 +18,6 @@ var Event = (function(){
             if (!!this.get("start") && !!this.get("end")) {
                 this.set("duration", this.get("end") - this.get("start"));
             }
-        },
-
-        setDuration: function(event) {
-            console.log("Duration set to", this.get("duration"));
         }
     });
 
@@ -44,35 +40,71 @@ var Event = (function(){
         },
 
         render: function() { 
-            var element = $(this.el).html(SimpleTemplate(this.model.attributes));
-            element.find("input[type=date]").datepicker();
-            element.find("input[type=time]").timepicker();
-            return element;
+            return this.$el
+                .html(SimpleTemplate(this.model.attributes))
+                .find("input[type=date]").datepicker().end()
+                .find("input[type=time]").timepicker().end();
         },
 
         changeStart: function(event) {
-            var date = $(this.el).find(".start-date").val();
-            var time = $(this.el).find(".start-time").val();
+            var date = this.$el.find(".start-date").val();
+            var time = this.$el.find(".start-time").val();
             if (!!date && !!time) {
                 this.model.set("start", moment(date + " " + time, "MM/DD/YYYY HH:mm"));
             }
         },
         changeEnd: function(event) {
-            var date = $(this.el).find(".end-date").val();
-            var time = $(this.el).find(".end-time").val();
+            var date = this.$el.find(".end-date").val();
+            var time = this.$el.find(".end-time").val();
             if (!!date && !!time) {
                 this.model.set("end", moment(date + " " + time, "MM/DD/YYYY HH:mm"));
             }
         },
         durationChanged: function(event) {
             var milliseconds = this.model.get("duration");
-            $(this.el).height(milliseconds/60000);
+            this.$el.height(milliseconds/60000);
         }
     }); 
+
+    var DialogView = Backbone.View.extend({
+        initialize: function() {
+            $("#event-dialog").dialog({
+                autoOpen: false,
+                modal: true
+            });
+
+            this.setElement($("#event-dialog"));
+            _.bindAll(this, "create");
+        },
+
+        create: function(collection) {
+            var that = this;
+            var $form = this.$el.find("form");
+            var createCB = function() {
+                collection.add(new Event.model($form.serializeObject()));
+                that.$el.dialog("close");
+            };
+
+            $form.unbind("submit").bind("submit", function(event) {
+                    createCB();
+                    return false;
+                })
+                .get(0).reset();
+
+            this.$el.dialog("option", {
+                buttons: {
+                    "Cancel": function() { $(this).dialog("close"); },
+                    "Ok": createCB
+                }
+            });
+            this.$el.dialog("open");
+        }
+    });
 
     return {
         model: Model,
         collection: Collection,
-        view: SimpleView
+        view: SimpleView,
+        dialog: new DialogView()
     };
 })();

@@ -27,16 +27,13 @@ var Room = (function(){
             this.model.events.bind('add', this.eventAdded);
         },
         render: function() { 
-            return $(this.el).html(SimpleTemplate(this.model.attributes));
+            return this.$el.html(SimpleTemplate(this.model.attributes));
         },
         addEvent: function() {
-            var name = prompt("Event name?");
-            if (name) {
-                this.model.events.add(new Event.model({name: name}));
-            }
+            Event.dialog.create(this.model.events);
         },
         eventAdded: function(event) {
-            $(this.el).find(".events").append(new Event.view({model: event}).render());
+            this.$el.find(".events").append(new Event.view({model: event}).render());
         }
     }); 
 

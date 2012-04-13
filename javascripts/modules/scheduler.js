@@ -12,6 +12,7 @@ var Scheduler = (function(){
 
     var View = Backbone.View.extend({ 
         className: 'scheduler',
+        id: 'scheduler',
         events: {
             "click button.add-room": "addRoom",
             "click button.add-staged-event": "addEvent"
@@ -23,7 +24,7 @@ var Scheduler = (function(){
             this.model.events.bind('add', this.eventAdded);
         },
         render: function() { 
-            return $(this.el).html(Template());
+            return this.$el.html(Template());
         },
         addRoom: function() {
             var name = prompt("Room name?");
@@ -32,17 +33,13 @@ var Scheduler = (function(){
             }
         },
         roomAdded: function(room) {
-          $(this.el).find(".rooms").append(new Room.view({model: room}).render());
+            this.$el.find(".rooms").append(new Room.view({model: room}).render());
         },
         addEvent: function() {
-            var name = prompt("Event name?");
-            if (name) {
-                this.model.events.add(new Event.model({name: name}));
-            }
+            Event.dialog.create(this.model.events);
         },
         eventAdded: function(event) {
-            console.log($(this.el));
-            $(this.el).find(".staging").append(new Event.view({model: event}).render());
+            this.$el.find(".staging").append(new Event.view({model: event}).render());
         }
     });
 

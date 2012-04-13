@@ -56,15 +56,26 @@
       </div>
     </script>
 
+
     <script src="javascripts/lib/moment.min.js"></script>
     <script src="javascripts/lib/jquery.ui.timepicker.js"></script>
 
-    <script src="javascripts/modules/event.js"></script>
-    <script src="javascripts/modules/room.js"></script>
-    <script src="javascripts/modules/scheduler.js"></script>
-
-    <script src="javascripts/app.js"></script>
 </head>
 <body>
+
+  <div id="event-dialog">
+    <form>
+    <fieldset>
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+    </fieldset>
+    </form>
+  </div>
+
+  <script src="javascripts/modules/event.js"></script>
+  <script src="javascripts/modules/room.js"></script>
+  <script src="javascripts/modules/scheduler.js"></script>
+
+  <script src="javascripts/app.js"></script>
 </body>
 </html>

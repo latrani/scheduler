@@ -1,5 +1,33 @@
 /*global Backbone, Handlebars, _, Event, Room, Scheduler */
 
+jQuery.fn.serializeObject = function() {
+  var arrayData, objectData;
+  arrayData = this.serializeArray();
+  objectData = {};
+
+  $.each(arrayData, function() {
+    var value;
+
+    if (this.value != null) {
+      value = this.value;
+    } else {
+      value = '';
+    }
+
+    if (objectData[this.name] != null) {
+      if (!objectData[this.name].push) {
+        objectData[this.name] = [objectData[this.name]];
+      }
+
+      objectData[this.name].push(value);
+    } else {
+      objectData[this.name] = value;
+    }
+  });
+
+  return objectData;
+};
+
 $(function(){
     var scheduler = Scheduler.initialize();
     $("body").append(scheduler.view.render());
@@ -13,4 +41,5 @@ $(function(){
     ballroom.events.add(dance);
     scheduler.model.rooms.add(panelroom);
     panelroom.events.add(panel);
+
 });
