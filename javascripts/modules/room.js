@@ -23,8 +23,9 @@ var Room = (function(){
         },
 
         initialize: function() {
-            _.bindAll(this, "addEvent", "eventAdded");
+            _.bindAll(this, "addEvent", "eventAdded", "eventRemoved");
             this.model.events.bind('add', this.eventAdded);
+            this.model.events.bind('remove', this.eventRemoved);
         },
         render: function() { 
             return this.$el.html(SimpleTemplate(this.model.attributes));
@@ -34,6 +35,9 @@ var Room = (function(){
         },
         eventAdded: function(event) {
             this.$el.find(".events").append(new Event.view({model: event}).render());
+        },
+        eventRemoved: function(event) {
+            this.$el.find(".events").find("#event-" + event.cid).remove();
         }
     }); 
 

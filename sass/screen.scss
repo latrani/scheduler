@@ -44,7 +44,16 @@ $event-width: $room-width - $event-padding * 2;
 input[type=date] {
     width: 40px;
 }
-
 input[type=time] {
     width: 40px;
+}    
+
+#event-dialog form {
+    input#event-name {
+        width: 160px;
+    }
+    label {
+        display: inline-block;
+        width: 70px;
+    }
 }

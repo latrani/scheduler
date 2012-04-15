@@ -1,5 +1,6 @@
 /*global Backbone, Handlebars, _, Event, Room, Scheduler */
 
+
 jQuery.fn.serializeObject = function() {
   var arrayData, objectData;
   arrayData = this.serializeArray();
