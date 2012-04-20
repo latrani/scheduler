@@ -26,9 +26,20 @@ var Room = (function(){
             _.bindAll(this, "addEvent", "eventAdded", "eventRemoved");
             this.model.events.bind('add', this.eventAdded);
             this.model.events.bind('remove', this.eventRemoved);
+            this.$el.data("backbone-view", this);
         },
         render: function() { 
-            return this.$el.html(SimpleTemplate(this.model.attributes));
+            var that = this;
+            return this.$el.html(SimpleTemplate(this.model.attributes)).attr("id", "room-" + this.model.cid)
+            .droppable({
+                    drop: function(event, ui) {
+                        var eventModel = ui.draggable.data("backbone-view").model;
+                        if (eventModel.collection && eventModel.collection !== that.model.events) {
+                            eventModel.collection.remove(eventModel);
+                            that.model.events.add(eventModel);
+                        }
+                    }
+            });
         },
         addEvent: function() {
             Event.dialog.create(this.model.events);

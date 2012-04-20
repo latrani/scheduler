@@ -19,12 +19,22 @@ var Scheduler = (function(){
         },
  
         initialize: function() {
-            _.bindAll(this, "addRoom", "roomAdded", "addEvent", "eventAdded");
+            _.bindAll(this, "addRoom", "roomAdded", "addEvent", "eventAdded", "eventRemoved");
             this.model.rooms.bind('add', this.roomAdded);
             this.model.events.bind('add', this.eventAdded);
+            this.model.events.bind('remove', this.eventRemoved);
         },
-        render: function() { 
-            return this.$el.html(Template());
+        render: function() {
+            var that = this;
+            return this.$el.html(Template()).find(".staging-panel").droppable({
+                    drop: function(event, ui) {
+                        var eventModel = ui.draggable.data("backbone-view").model;
+                        if (eventModel.collection && eventModel.collection !== that.model.events) {
+                            eventModel.collection.remove(eventModel);
+                            that.model.events.add(eventModel);
+                        }
+                    }
+            }).end();
         },
         addRoom: function() {
             var name = prompt("Room name?");
@@ -40,6 +50,9 @@ var Scheduler = (function(){
         },
         eventAdded: function(event) {
             this.$el.find(".staging").append(new Event.view({model: event}).render());
+        },
+        eventRemoved: function(event) {
+            this.$el.find(".staging").find("#event-" + event.cid).remove();
         }
     });
 

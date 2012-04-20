@@ -22,6 +22,7 @@ $event-width: $room-width - $event-padding * 2;
     margin: 10px $room-margin;
     float: left;
     width: $room-width;
+    position: relative;
 }
 
 .event {
@@ -29,6 +30,7 @@ $event-width: $room-width - $event-padding * 2;
     width: $event-width;
     padding: $event-padding;
     margin: 5px 0;
+    z-index: 10;
 }
 
 .staging-panel {

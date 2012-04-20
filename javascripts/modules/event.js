@@ -48,10 +48,16 @@ var Event = (function(){
             _.bindAll(this, "render", "durationChanged");
             this.model.on("change", this.render);
             this.model.on("change:duration", this.durationChanged);
+            this.$el.data("backbone-view", this);
         },
 
         render: function() { 
-            return this.$el.html(SimpleTemplate(this.model.attributes)).attr("id", "event-" + this.model.cid);
+            return this.$el.html(SimpleTemplate(this.model.attributes)).attr("id", "event-" + this.model.cid)
+            .draggable({
+                revert: true,
+                scroll: false,
+                zindex: 10
+            });
         },
         durationChanged: function(event) {
             var milliseconds = this.model.get("duration");
