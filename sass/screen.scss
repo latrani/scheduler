@@ -22,15 +22,34 @@ $event-width: $room-width - $event-padding * 2;
     margin: 10px $room-margin;
     float: left;
     width: $room-width;
-    position: relative;
+    height: 1000px;
+    .container {
+        margin-top: 5px;
+        position: relative;      
+        height: 100px;  
+        width: 100px;
+    }
+    .slots, .events {
+        position: absolute;
+        height: 100px;  
+        width: 100px;
+    }
+    .slot {
+        height: 30px;
+        width: $event-width + $event-padding * 2;
+        &.accept {
+            background-color: #EEE;
+        }
+    }
 }
 
 .event {
     background-color: #CFF;
     width: $event-width;
     padding: $event-padding;
-    margin: 5px 0;
     z-index: 10;
+    position: absolute;
+    top: 0;
 }
 
 .staging-panel {

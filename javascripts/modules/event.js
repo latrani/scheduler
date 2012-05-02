@@ -8,6 +8,10 @@ var Event = (function(){
         //   end: moment
         //   duration: milliseconds
 
+        defaults: { 
+            duration: 60*60*1000 // One hour
+        },
+
         initialize: function() {
             _.bindAll(this, "updateDuration");
             this.on("change:start change:end", this.updateDuration);
@@ -45,26 +49,39 @@ var Event = (function(){
         },
         
         initialize: function() {
-            _.bindAll(this, "render", "durationChanged");
+            _.bindAll(this, "render", "durationChanged", "startChanged", "getOffset");
             this.model.on("change", this.render);
             this.model.on("change:duration", this.durationChanged);
+            this.model.on("change:start", this.startChanged);
             this.$el.data("backbone-view", this);
         },
 
         render: function() { 
+            var that = this;
             return this.$el.html(SimpleTemplate(this.model.attributes)).attr("id", "event-" + this.model.cid)
             .draggable({
+                opacity: 0.5,
                 revert: true,
                 scroll: false,
                 zindex: 10
-            });
+            }).css({"position": "absolute", "top": this.getOffset()});
         },
         durationChanged: function(event) {
             var milliseconds = this.model.get("duration");
             this.$el.height(milliseconds/60000);
         },
+        startChanged: function(event) {
+            this.$el.css({"top": this.getOffset()});
+        },
         edit: function(event) {
             Event.dialog.edit(this.model);
+        },
+        getOffset: function() {
+            var start = this.model.get("start");
+            if (!start) {
+                return 0;
+            }
+            return (start.hours() * 60 + start.minutes()) / 2;
         }
     }); 
 

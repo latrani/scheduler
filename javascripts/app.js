@@ -39,8 +39,8 @@ $(function(){
     var panel = new Event.model({name: "Postfurry Panel"});
 
     scheduler.model.rooms.add(ballroom);
-    ballroom.events.add(dance);
     scheduler.model.rooms.add(panelroom);
-    panelroom.events.add(panel);
+    scheduler.model.events.add(dance);
+    scheduler.model.events.add(panel);
 
 });

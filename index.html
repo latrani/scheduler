@@ -30,7 +30,15 @@
     <script id="room-template" type="text/x-handlebars-template">
       <h2>{{name}}</h2>
       <button class="add-event">Add Event</button>
-      <div class="events"></div>
+      <div class="container">
+        <div class="slots">
+          {{#each slots}}
+          <div class="slot">{{this}}</div>
+          {{/each}}
+        </div>
+        <div class="events">
+        </div>
+      </div>
     </script>
 
     <script id="scheduler-template" type="text/x-handlebars-template">

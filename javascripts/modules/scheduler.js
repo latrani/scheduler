@@ -27,13 +27,13 @@ var Scheduler = (function(){
         render: function() {
             var that = this;
             return this.$el.html(Template()).find(".staging-panel").droppable({
-                    drop: function(event, ui) {
-                        var eventModel = ui.draggable.data("backbone-view").model;
-                        if (eventModel.collection && eventModel.collection !== that.model.events) {
-                            eventModel.collection.remove(eventModel);
-                            that.model.events.add(eventModel);
-                        }
+                drop: function(event, ui) {
+                    var eventModel = ui.draggable.data("backbone-view").model;
+                    if (eventModel.collection && eventModel.collection !== that.model.events) {
+                        eventModel.collection.remove(eventModel);
+                        that.model.events.add(eventModel);
                     }
+                }
             }).end();
         },
         addRoom: function() {
